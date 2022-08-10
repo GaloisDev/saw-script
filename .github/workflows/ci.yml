@@ -66,7 +66,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-18.04, macos-12, windows-latest]
+        os: [ubuntu-18.04, macos-12, windows-latest, self-hosted]
         ghc: ["8.8.4", "8.10.7", "9.0.2"]
         exclude:
           # Exclude 8.8 on macOS 12 due to
@@ -80,6 +80,8 @@ jobs:
           # is resolved
           - os: windows-latest
             ghc: "9.0.2"
+          - os: self-hosted
+            ghc: "8.10.7"
     outputs:
       cabal-test-suites-json: ${{ steps.cabal-test-suites.outputs.targets-json }}
     steps:
@@ -207,7 +209,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-12]
+        os: [ubuntu-latest, macos-12, self-hosted]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
