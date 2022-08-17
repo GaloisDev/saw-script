@@ -69,8 +69,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        #os: [ubuntu-18.04, macos-12, windows-latest, self-hosted]
-        os: [self-hosted]
+        type: [self-hosted]
+        #os: [ubuntu-18.04, macos-12, windows-latest]
+        os: [macos-12]
         ghc: ["8.8.4", "8.10.7", "9.0.2"]
         exclude:
           # Exclude 8.8 on macOS 12 due to
@@ -84,8 +85,6 @@ jobs:
           # is resolved
           - os: windows-latest
             ghc: "9.0.2"
-          - os: self-hosted
-            ghc: "8.10.7"
     outputs:
       cabal-test-suites-json: ${{ steps.cabal-test-suites.outputs.targets-json }}
     steps:
@@ -213,8 +212,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        type: [self-hosted]
         #os: [ubuntu-latest, macos-12, self-hosted]
-        os: [self-hosted]
+        os: [macos-12]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -248,8 +248,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        type: [self-hosted]
         #os: [ubuntu-latest, macos-12]
-        os: [self-hosted]
+        os: [macos-12]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -301,8 +302,9 @@ jobs:
         include:
           - name: Install and test
             test: saw-remote-api/scripts/run_rpc_tests.sh
+            type: [self-hosted]
             #os: ubuntu-18.04
-            os: self-hosted
+            os: macos-12
           # TODO: saw-remote-api unit tests are disabled pending a fix for #1699
           - name: Install on MacOS
             test: |
@@ -310,12 +312,13 @@ jobs:
               poetry update
               poetry install
               poetry run mypy saw_client/
-            #os: macos-12
-            os: self-hosted
+            type: [self-hosted]
+            os: macos-12
           - name: Check docs
             test: saw-remote-api/scripts/check_docs.sh
+            type: [self-hosted]
             #os: ubuntu-18.04
-            os: self-hosted
+            os: macos-12
     steps:
       - uses: actions/checkout@v2
         with:
@@ -359,8 +362,9 @@ jobs:
       fail-fast: false
       matrix:
         suite: ${{ fromJson(needs.build.outputs.cabal-test-suites-json) }}
+        type: [self-hosted]
         #os: [ubuntu-18.04]
-        os: [self-hosted]
+        os: [macos-12]
         continue-on-error: [false]
         include:
           - suite: integration_tests
