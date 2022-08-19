@@ -9,7 +9,7 @@ on:
   push:
     tags: ["v?[0-9]+.[0-9]+(.[0-9]+)?"]
     #branches: [master, "release-**"]
-    branches: [mac-runner]
+    branches: [stardust-runners]
   pull_request:
   schedule:
     - cron: "0 10 * * *" # 10am UTC -> 2/3am PST
@@ -32,7 +32,7 @@ env:
 jobs:
   config:
     #runs-on: ubuntu-latest
-    runs-on: self-hosted
+    runs-on: [self-hosted, ubuntu-latest]
     outputs:
       name: ${{ steps.config.outputs.name }}
       version: ${{ steps.config.outputs.version }}
@@ -71,7 +71,7 @@ jobs:
       matrix:
         type: [self-hosted]
         #os: [ubuntu-18.04, macos-12, windows-latest]
-        os: [macos-12]
+        os: [ubuntu-18.04, macos-12]
         ghc: ["8.8.4", "8.10.7", "9.0.2"]
         exclude:
           # Exclude 8.8 on macOS 12 due to
@@ -303,8 +303,8 @@ jobs:
           - name: Install and test
             test: saw-remote-api/scripts/run_rpc_tests.sh
             type: [self-hosted]
-            os: macos-12
-            #os: ubuntu-18.04
+            #os: macos-12
+            os: ubuntu-18.04
           # TODO: saw-remote-api unit tests are disabled pending a fix for #1699
           - name: Install on MacOS
             test: |
@@ -429,7 +429,7 @@ jobs:
 
   build-push-image:
     #runs-on: ubuntu-latest
-    runs-on: self-hosted
+    runs-on: [self-hosted, ubuntu-latest]
     needs: [config]
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || needs.config.outputs.release == 'true'
     strategy:
@@ -532,7 +532,7 @@ jobs:
     timeout-minutes: 120
     needs: build
     #runs-on: ubuntu-18.04
-    runs-on: self-hosted
+    runs-on: [self-hosted, ubuntu-18.04]
     strategy:
       fail-fast: false
       matrix:
@@ -588,7 +588,7 @@ jobs:
   # - dependencies through `needs:` are validated, CI will fail if it's invalid
   mergify:
     #runs-on: ubuntu-latest
-    runs-on: self-hosted
+    runs-on: [self-hosted, ubuntu-latest]
     needs:
       - build
       - heapster-tests
