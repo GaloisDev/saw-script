@@ -71,7 +71,7 @@ jobs:
       matrix:
         type: [self-hosted]
         #os: [ubuntu-18.04, macos-12, windows-latest]
-        os: [macos-12]
+        os: [ubuntu-18.04, macos-12]
         ghc: ["8.8.4", "8.10.7", "9.0.2"]
         exclude:
           # Exclude 8.8 on macOS 12 due to
@@ -249,8 +249,7 @@ jobs:
       fail-fast: false
       matrix:
         type: [self-hosted]
-        #os: [ubuntu-latest, macos-12]
-        os: [macos-12]
+        os: [ubuntu-latest, macos-12]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -303,8 +302,7 @@ jobs:
           - name: Install and test
             test: saw-remote-api/scripts/run_rpc_tests.sh
             type: [self-hosted]
-            #os: ubuntu-18.04
-            os: macos-12
+            os: ubuntu-18.04
           # TODO: saw-remote-api unit tests are disabled pending a fix for #1699
           - name: Install on MacOS
             test: |
@@ -363,8 +361,7 @@ jobs:
       matrix:
         suite: ${{ fromJson(needs.build.outputs.cabal-test-suites-json) }}
         type: [self-hosted]
-        #os: [ubuntu-18.04]
-        os: [macos-12]
+        os: [ubuntu-18.04]
         continue-on-error: [false]
         include:
           - suite: integration_tests
@@ -587,7 +584,8 @@ jobs:
   # - changes to jobs or job instances don't require a mergify config update
   # - dependencies through `needs:` are validated, CI will fail if it's invalid
   mergify:
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs:
       - build
       - heapster-tests
