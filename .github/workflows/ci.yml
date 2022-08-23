@@ -421,7 +421,6 @@ jobs:
           dist-tests/${{ matrix.suite }}
 
   build-push-image:
-    #runs-on: ubuntu-latest
     runs-on: [self-hosted, ubuntu-latest]
     needs: [config]
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || needs.config.outputs.release == 'true'
@@ -524,7 +523,6 @@ jobs:
     name: "Test s2n proofs"
     timeout-minutes: 120
     needs: build
-    #runs-on: ubuntu-18.04
     runs-on: [self-hosted, ubuntu-18.04]
     strategy:
       fail-fast: false
@@ -580,7 +578,6 @@ jobs:
   # - changes to jobs or job instances don't require a mergify config update
   # - dependencies through `needs:` are validated, CI will fail if it's invalid
   mergify:
-    #runs-on: ubuntu-latest
     runs-on: [self-hosted, ubuntu-latest]
     needs:
       - build
@@ -601,10 +598,7 @@ jobs:
         ghc: ["8.8.4", "8.10.7", "9.0.2"]
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - shell: bash
-      - name: "Cleanup build directory on ${{ matrix.os }}"
-      - working-directory:
-      - run: |
+        name: "Cleanup build directory on ${{ matrix.os }}"
+        run: |
           if [ -d ~/.ocam ] ; then rm -rf ~/.ocam ; fi
