@@ -593,7 +593,6 @@ jobs:
 
   cleanup:
     runs-on: ${{ matrix.os }}
-    needs: [config]
     strategy:
       fail-fast: false
       matrix:
@@ -601,6 +600,9 @@ jobs:
         os: [macos-12, windows-latest]
         ghc: ["8.8.4", "8.10.7", "9.0.2"]
     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - shell: bash
       - name: "Cleanup build directory on ${{ matrix.os }}"
       - working-directory:
