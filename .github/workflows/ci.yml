@@ -590,6 +590,8 @@ jobs:
 
   cleanup:
     runs-on: ${{ matrix.os }}
+    needs:
+      - mergify
     strategy:
       fail-fast: false
       matrix:
