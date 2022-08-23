@@ -602,7 +602,7 @@ jobs:
         ghc: ["8.8.4", "8.10.7", "9.0.2"]
     steps:
       - shell: bash
-      - name: "Cleanup build directory on ${{ matrix.os }}
+      - name: "Cleanup build directory on ${{ matrix.os }}"
       - working-directory:
       - run: |
           if [ -d ~/.ocam ] ; then rm -rf ~/.ocam ; fi
