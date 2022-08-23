@@ -31,7 +31,6 @@ env:
 
 jobs:
   config:
-    #runs-on: ubuntu-latest
     runs-on: [self-hosted, ubuntu-latest]
     outputs:
       name: ${{ steps.config.outputs.name }}
@@ -591,3 +590,19 @@ jobs:
       - s2n-tests
     steps:
       - run: "true"
+
+  cleanup:
+    runs-on: ${{ matrix.os }}
+    needs: [config]
+    strategy:
+      fail-fast: false
+      matrix:
+        type: [self-hosted]
+        os: [macos-12, windows-latest]
+        ghc: ["8.8.4", "8.10.7", "9.0.2"]
+    steps:
+      - shell: bash
+      - name: "Cleanup build directory on ${{ matrix.os }}
+      - working-directory:
+      - run: |
+          if [ -d ~/.ocam ] ; then rm -rf ~/.ocam ; fi
