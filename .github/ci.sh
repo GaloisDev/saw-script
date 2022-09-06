@@ -75,6 +75,101 @@ build() {
 }
 
 install_system_deps() {
+  # OS Specific Packages
+  if [[ $BUILD_TARGET_OS == 'ubuntu-18.04' ]] ; then
+    # Assume yes for all packages
+    sudo echo -e "APT::Get::Assume-Yes \"true\";\nAPT::Get::allow \"true\";" | sudo tee /etc/apt/apt.conf.d/90forceyes
+    sudo apt update
+    sudo apt install \
+      antlr3 \
+      apt-transport-https \
+      apt-utils \
+      autoconf \
+      automake \
+      bubblewrap \
+      build-essential \
+      ca-certificates \
+      clang \
+      cmake \
+      curl \
+      darcs \
+      docker-compose \
+      g++-9-multilib \
+      g++-multilib \
+      gcc-9-multilib \
+      gcc-multilib \
+      git \
+      gperf \
+      lib32asan5 \
+      lib32atomic1 \
+      lib32gcc-9-dev \
+      lib32gcc-s1 \
+      lib32gomp1 \
+      lib32itm1 \
+      lib32quadmath0 \
+      lib32stdc++-9-dev \
+      lib32stdc++6 \
+      lib32ubsan1 \
+      libantlr3c-dev \
+      libboost-all-dev \
+      libc6-dev-i386 \
+      libc6-dev-x32 \
+      libc6-i386 \
+      libc6-x32 \
+      libfftw3-dev \
+      libgmp3-dev \
+      libpython2-stdlib \
+      libpython2.7-minimal \
+      libpython2.7-stdlib \
+      libreadline-dev \
+      libtinfo-dev \
+      libtool \
+      libtool-bin \
+      libx32asan5 \
+      libx32atomic1 \
+      libx32gcc-9-dev \
+      libx32gcc-s1 \
+      libx32gomp1 \
+      libx32itm1 \
+      libx32quadmath0 \
+      libx32stdc++-9-dev \
+      libx32stdc++6 \
+      libx32ubsan1 \
+      locales \
+      mercurial \
+      mercurial-common \
+      musl \
+      musl-dev \
+      musl-tools \
+      python-setuptools \
+      python2 \
+      python2-minimal \
+      python2.7 \
+      python2.7-minimal \
+      python3-distutils \
+      python3-pip \
+      readline-common \
+      software-properties-common \
+      wget \
+      zip \
+      zlib1g \
+      zlibc
+    sudo locale-gen en_US.UTF-8
+    # Symlink libreadline.so.7
+    if ! [[ -f /lib/$(arch)-linux-gnu/libreadline.so.7 ]] ; then
+      sudo ln -s /lib/$(arch)-linux-gnu/libreadline.so.8 /lib/$(arch)-linux-gnu/libreadline.so.7
+    fi
+    # Install libtinfo6
+    ls -l /lib/$(arch)-linux-gnu/libtinfo*
+    if ! [[ -f /lib/$(arch)-linux-gnu/libtinfo.so.6 ]] ; then
+      wget http://mirrors.cat.pdx.edu/ubuntu/pool/main/n/ncurses/libtinfo6_6.2-0ubuntu2_$(arch).deb
+      dpkg -i libtinfo6_6.2-0ubuntu2_$(arch).deb
+    fi
+    ls -l /lib/$(arch)-linux-gnu/libtinfo*
+
+  fi
+
+  # Install Solvers Packages
   (cd $BIN && curl -o bins.zip -sL "https://github.com/GaloisInc/what4-solvers/releases/download/$SOLVER_PKG_VERSION/$BUILD_TARGET_OS-bin.zip" && unzip -o bins.zip && rm bins.zip)
   chmod +x $BIN/*
   cp $BIN/yices_smt2$EXT $BIN/yices-smt2$EXT
