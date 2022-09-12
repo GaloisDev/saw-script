@@ -199,26 +199,26 @@ jobs:
       matrix:
         os: [macos-12, windows-latest]
         ghc: ["8.8.4", "8.10.7", "9.0.2"]
-        #include:
-        #  - os: macos-12
-        #    ghc: "8.10.7"
-        #  - os: macos-12
-        #    ghc: "9.0.2"
-        #  - os: windows-latest
-        #    ghc: "8.10.7"
-        #exclude:
+        include:
+          - os: macos-12
+            ghc: "8.10.7"
+          - os: macos-12
+            ghc: "9.0.2"
+          - os: windows-latest
+            ghc: "8.10.7"
+        exclude:
           # Exclude 8.8 on macOS 12 due to
           # https://gitlab.haskell.org/ghc/ghc/-/issues/18446
-          #- os: macos-12
-          #  ghc: "8.8.4"
-          #- os: windows-latest
-          #  ghc: "8.8.4"
+          - os: macos-12
+            ghc: "8.8.4"
+          - os: windows-latest
+            ghc: "8.8.4"
           # Exclude 9.0 on Windows for now until
           # https://github.com/commercialhaskell/stackage/issues/6400
           # is resolved
-          #- os: windows-latest
-          #  ghc: "9.0.2"
-          # Exclude self-hosted for OS's that are note supported by stardust
+          - os: windows-latest
+            ghc: "9.0.2"
+          # Exclude self-hosted for OS's that are not supported by stardust
           #- os: macos-12
           #  type: "self-hosted"
           #- os: windows-latest
