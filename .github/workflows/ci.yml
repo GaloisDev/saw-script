@@ -222,7 +222,7 @@ jobs:
           #- os: macos-12
           #  type: "self-hosted"
           - os: windows-latest
-            type: "self-hosted"
+            tags: "self-hosted"
     outputs:
       cabal-test-suites-json: ${{ steps.cabal-test-suites.outputs.targets-json }}
     steps:
