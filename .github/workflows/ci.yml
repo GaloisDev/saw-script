@@ -221,8 +221,8 @@ jobs:
           # Exclude self-hosted for OS's that are not supported by stardust
           #- os: macos-12
           #  type: "self-hosted"
-          - os: windows-latest
-            tags: "self-hosted"
+          #- os: windows-latest
+          #  tags: "self-hosted"
     outputs:
       cabal-test-suites-json: ${{ steps.cabal-test-suites.outputs.targets-json }}
     steps:
